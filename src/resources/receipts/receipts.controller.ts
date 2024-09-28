@@ -50,8 +50,9 @@ export class ReceiptsController {
 
   @Get(':id')
   @ApiOperation({ operationId: 'get-receipt-by-id' })
-  findOne(@Param('id') id: string) {
-    return this.receiptsService.findOne(+id);
+  @ApiResponse({ type: ReceiptDTO })
+  findOne(@Param('id') id: string): Promise<ReceiptDTO> {
+    return this.receiptsService.findOne(id);
   }
 
   @Delete(':id')

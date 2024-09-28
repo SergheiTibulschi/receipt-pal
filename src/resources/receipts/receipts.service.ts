@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { ScraperService } from '../scraper/scraper.service';
 import { ReceiptUrlDTO } from './dto/receipt-url.dto';
 import { ScrapeMe } from '../scraper/helpers';
@@ -63,6 +63,7 @@ export class ReceiptsService {
       amount: item.amount,
       vat_amount: item.vatAmount,
       vat_percentage: item.vatPercentage,
+      product_type: item.productType,
     }));
 
     const { error: itemsError } = await this.supabase
@@ -90,7 +91,7 @@ export class ReceiptsService {
         `
     *,
     receipt_items (
-      description, quantity, unit_price, amount, vat_percentage, vat_amount
+      description, quantity, unit_price, amount, vat_percentage, vat_amount, product_type
     )
   `,
       )
@@ -122,13 +123,54 @@ export class ReceiptsService {
             amount: item.amount,
             vatAmount: item.vat_amount,
             vatPercentage: item.vat_percentage,
+            productType: item.product_type,
           })),
         }) as ReceiptDTO,
     );
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} receipt`;
+  async findOne(id: string): Promise<ReceiptDTO> {
+    const { data, error } = await this.supabase
+      .getClient()
+      .from('receipts')
+      .select(
+        `
+    *,
+    receipt_items (
+      description, quantity, unit_price, amount, vat_percentage, vat_amount, product_type
+    )
+  `,
+      )
+      .eq('receipt_id', id)
+      .single();
+
+    if (error) {
+      throw new NotFoundException('Receipt not found');
+    }
+
+    return {
+      companyName: data.company_name,
+      fiscalCode: data.fiscal_code,
+      address: data.address,
+      registrationNumber: data.registration_number,
+      receiptId: data.receipt_id,
+      transactionDetails: {
+        purchasedAt: data.purchased_at,
+        fiscalReceiptNumber: data.fiscal_receipt_number,
+        manufacturingNumber: data.manufacturing_number,
+      },
+      totalAmount: data.total_amount,
+      paymentMethod: data.payment_method,
+      items: data.receipt_items.map((item) => ({
+        description: item.description,
+        quantity: item.quantity,
+        unitPrice: item.unit_price,
+        amount: item.amount,
+        vatAmount: item.vat_amount,
+        vatPercentage: item.vat_percentage,
+        productType: item.product_type,
+      })),
+    };
   }
 
   remove(id: number) {

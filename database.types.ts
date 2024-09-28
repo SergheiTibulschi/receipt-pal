@@ -6,6 +6,7 @@ export type Database = {
           amount: string;
           description: string;
           id: number;
+          product_type: string;
           quantity: number;
           receipt_id: string;
           unit_price: number;
@@ -16,6 +17,7 @@ export type Database = {
           amount: string;
           description: string;
           id?: number;
+          product_type: string;
           quantity: number;
           receipt_id: string;
           unit_price: number;
@@ -26,6 +28,7 @@ export type Database = {
           amount?: string;
           description?: string;
           id?: number;
+          product_type?: string;
           quantity?: number;
           receipt_id?: string;
           unit_price?: number;
