@@ -95,7 +95,7 @@ export class ReceiptsService {
     )
   `,
       )
-      .range(page, limit);
+      .range(page - 1, limit);
 
     if (error) {
       throw new Error(`We failed to fetch your receipts. Sorry...`);
@@ -171,9 +171,5 @@ export class ReceiptsService {
         productType: item.product_type,
       })),
     };
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} receipt`;
   }
 }

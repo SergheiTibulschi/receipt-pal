@@ -6,6 +6,7 @@ import { ScraperService } from './resources/scraper/scraper.service';
 import { ScraperModule } from './resources/scraper/scraper.module';
 import { AssistantService } from './resources/assistant/assistant.service';
 import { AssistantModule } from './resources/assistant/assistant.module';
+import { ChatModule } from './resources/chat/chat.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { AssistantModule } from './resources/assistant/assistant.module';
     ReceiptsModule,
     ScraperModule,
     AssistantModule,
+    ChatModule,
   ],
   controllers: [],
   providers: [ScraperService, AssistantService],

@@ -1,12 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Param,
-  Delete,
-  Query,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Query } from '@nestjs/common';
 import { ReceiptsService } from './receipts.service';
 import { ReceiptUrlDTO } from './dto/receipt-url.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
@@ -53,11 +45,5 @@ export class ReceiptsController {
   @ApiResponse({ type: ReceiptDTO })
   findOne(@Param('id') id: string): Promise<ReceiptDTO> {
     return this.receiptsService.findOne(id);
-  }
-
-  @Delete(':id')
-  @ApiOperation({ operationId: 'delete-receipt-by-id' })
-  remove(@Param('id') id: string) {
-    return this.receiptsService.remove(+id);
   }
 }

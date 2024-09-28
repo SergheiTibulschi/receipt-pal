@@ -90,6 +90,30 @@ export type Database = {
         };
         Relationships: [];
       };
+      threads: {
+        Row: {
+          created_at: string | null;
+          id: number;
+          mega_message_id: string;
+          thread_id: string;
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string | null;
+          id?: number;
+          mega_message_id: string;
+          thread_id: string;
+          user_id: string;
+        };
+        Update: {
+          created_at?: string | null;
+          id?: number;
+          mega_message_id?: string;
+          thread_id?: string;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
     };
     Views: {
       [_ in never]: never;

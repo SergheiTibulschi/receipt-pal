@@ -78,17 +78,48 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ReceiptDTO"
-    delete:
-      operationId: delete-receipt-by-id
+  /chat/{userId}:
+    get:
+      operationId: get-chat
       summary: ""
       parameters:
-        - name: id
+        - name: userId
           required: true
           in: path
           schema:
             type: string
       responses:
         "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ApiResponseDto"
+                  - properties:
+                      data:
+                        $ref: "#/components/schemas/ReceiptDTO"
+                      error:
+                        type: string
+                        nullable: true
+                        example: null
+                        description: An optional error message if something went wrong
+    post:
+      operationId: sendMessage
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChatMessageDto"
+      responses:
+        "201":
           description: ""
 info:
   title: ReceiptPal
@@ -192,3 +223,10 @@ components:
           type: string
       required:
         - url
+    ChatMessageDto:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message
