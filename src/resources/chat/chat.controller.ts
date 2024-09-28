@@ -4,6 +4,7 @@ import { ApiOperation } from '@nestjs/swagger';
 import { ApiGenericResponse } from '../../decorators/api-generic-response.decorator';
 import { ReceiptDTO } from '../receipts/dto/receipt.dto';
 import { ChatMessageDto } from './dto/chat-message.dto';
+import { MessageResponseDto } from './dto/message-response.dto';
 
 @Controller('chat')
 export class ChatController {
@@ -17,10 +18,17 @@ export class ChatController {
   }
 
   @Post(':userId')
+  @ApiOperation({ operationId: 'send-message' })
+  @ApiGenericResponse(MessageResponseDto)
   async sendMessage(
     @Param('userId') userId: string,
     @Body() body: ChatMessageDto,
   ) {
-    return this.chatService.sendMessage(userId, body.message);
+    try {
+      const response = await this.chatService.sendMessage(userId, body.message);
+      return { data: response, error: null };
+    } catch {
+      return { data: null, error: 'Error sending the message' };
+    }
   }
 }

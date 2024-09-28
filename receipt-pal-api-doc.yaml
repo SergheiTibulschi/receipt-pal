@@ -105,7 +105,8 @@ paths:
                         example: null
                         description: An optional error message if something went wrong
     post:
-      operationId: sendMessage
+      operationId: send-message
+      summary: ""
       parameters:
         - name: userId
           required: true
@@ -119,8 +120,21 @@ paths:
             schema:
               $ref: "#/components/schemas/ChatMessageDto"
       responses:
-        "201":
+        "200":
           description: ""
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ApiResponseDto"
+                  - properties:
+                      data:
+                        $ref: "#/components/schemas/MessageResponseDto"
+                      error:
+                        type: string
+                        nullable: true
+                        example: null
+                        description: An optional error message if something went wrong
 info:
   title: ReceiptPal
   description: ReceiptPal API description
@@ -223,6 +237,13 @@ components:
           type: string
       required:
         - url
+    MessageResponseDto:
+      type: object
+      properties:
+        response:
+          type: string
+      required:
+        - response
     ChatMessageDto:
       type: object
       properties:
