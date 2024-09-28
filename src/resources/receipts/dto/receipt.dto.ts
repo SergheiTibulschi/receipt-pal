@@ -32,6 +32,10 @@ class ItemDTO {
   @IsNumber()
   @ApiProperty({ type: 'number' })
   vatAmount: number;
+
+  @IsString()
+  @ApiProperty()
+  productType: string;
 }
 
 class TransactionDetailsDTO {

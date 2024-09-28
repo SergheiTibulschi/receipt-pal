@@ -72,8 +72,12 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        default:
           description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReceiptDTO"
     delete:
       operationId: delete-receipt-by-id
       summary: ""
@@ -124,6 +128,8 @@ components:
           type: string
         vatAmount:
           type: number
+        productType:
+          type: string
       required:
         - description
         - quantity
@@ -131,6 +137,7 @@ components:
         - amount
         - vatPercentage
         - vatAmount
+        - productType
     TransactionDetailsDTO:
       type: object
       properties:
