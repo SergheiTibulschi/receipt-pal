@@ -43,8 +43,8 @@ export class AssistantService {
           }
         }
       }
-    } else if (run.status === 'expired') {
-      console.log(run.status);
+    } else {
+      throw new Error(`Error running the assistant: ${run.status}`);
     }
   }
 }
