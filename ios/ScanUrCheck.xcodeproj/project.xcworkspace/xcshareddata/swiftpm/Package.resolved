@@ -1,0 +1,24 @@
+{
+  "originHash" : "cdedfbb3f9bbb067efc022b8c4e9138e39919a12ceff62525eca10be36723fe5",
+  "pins" : [
+    {
+      "identity" : "noughty-ui-lib-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "git@github.com:The-Noughty-Fox/noughty-ui-lib-swift.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "37a76ff45c038420f012954a4d3e8f9ad2b4f170"
+      }
+    },
+    {
+      "identity" : "tinyconstraints",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/roberthein/TinyConstraints.git",
+      "state" : {
+        "revision" : "3262e5c591d4ab6272255df2087a01bbebd138dc",
+        "version" : "4.0.2"
+      }
+    }
+  ],
+  "version" : 3
+}
