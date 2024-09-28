@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { OpenAI } from 'openai';
 import { ConfigService } from '@nestjs/config';
+import { ReceiptDTO } from '../receipts/dto/receipt.dto';
 
 @Injectable()
 export class AssistantService {
@@ -12,7 +13,7 @@ export class AssistantService {
     });
   }
 
-  async parseHtml(html: string) {
+  async parseHtml(html: string): Promise<ReceiptDTO> {
     const assistant = await this.client.beta.assistants.retrieve(
       this.config.get('OPENAI_ASSISTANT_ID'),
     );
@@ -29,6 +30,7 @@ export class AssistantService {
       const messages = await this.client.beta.threads.messages.list(
         run.thread_id,
       );
+      let receipt: ReceiptDTO;
 
       for (const message of messages.data.reverse()) {
         if (
@@ -36,13 +38,14 @@ export class AssistantService {
           message.role === 'assistant'
         ) {
           try {
-            const response = JSON.parse(message.content[0].text.value);
-            console.log(response);
+            receipt = JSON.parse(message.content[0].text.value) as ReceiptDTO;
           } catch {
             throw new Error('Error parsing the assistant response');
           }
         }
       }
+
+      return receipt;
     } else {
       throw new Error(`Error running the assistant: ${run.status}`);
     }

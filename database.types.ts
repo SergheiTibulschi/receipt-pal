@@ -1,23 +1,117 @@
 export type Database = {
   public: {
     Tables: {
-      receipts: {
+      receipt_items: {
         Row: {
-          created_at: string;
+          amount: string;
+          description: string;
           id: number;
-          total: number | null;
+          quantity: number;
+          receipt_id: string;
+          unit_price: number;
         };
         Insert: {
-          created_at?: string;
+          amount: string;
+          description: string;
           id?: number;
-          total?: number | null;
+          quantity: number;
+          receipt_id: string;
+          unit_price: number;
         };
         Update: {
-          created_at?: string;
+          amount?: string;
+          description?: string;
           id?: number;
-          total?: number | null;
+          quantity?: number;
+          receipt_id?: string;
+          unit_price?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'receipt_items_receipt_id_fkey';
+            columns: ['receipt_id'];
+            isOneToOne: false;
+            referencedRelation: 'receipts';
+            referencedColumns: ['receipt_id'];
+          },
+        ];
+      };
+      receipts: {
+        Row: {
+          address: string;
+          company_name: string;
+          created_at: string | null;
+          date: string;
+          fiscal_code: string;
+          fiscal_receipt_number: string;
+          id: number;
+          manufacturing_number: string;
+          payment_method: string;
+          receipt_id: string;
+          registration_number: string;
+          time: string;
+          total_amount: number;
+        };
+        Insert: {
+          address: string;
+          company_name: string;
+          created_at?: string | null;
+          date: string;
+          fiscal_code: string;
+          fiscal_receipt_number: string;
+          id?: number;
+          manufacturing_number: string;
+          payment_method: string;
+          receipt_id: string;
+          registration_number: string;
+          time: string;
+          total_amount: number;
+        };
+        Update: {
+          address?: string;
+          company_name?: string;
+          created_at?: string | null;
+          date?: string;
+          fiscal_code?: string;
+          fiscal_receipt_number?: string;
+          id?: number;
+          manufacturing_number?: string;
+          payment_method?: string;
+          receipt_id?: string;
+          registration_number?: string;
+          time?: string;
+          total_amount?: number;
         };
         Relationships: [];
+      };
+      vat_details: {
+        Row: {
+          id: number;
+          receipt_id: string;
+          vat_amount: number;
+          vat_percentage: string;
+        };
+        Insert: {
+          id?: number;
+          receipt_id: string;
+          vat_amount: number;
+          vat_percentage: string;
+        };
+        Update: {
+          id?: number;
+          receipt_id?: string;
+          vat_amount?: number;
+          vat_percentage?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'vat_details_receipt_id_fkey';
+            columns: ['receipt_id'];
+            isOneToOne: false;
+            referencedRelation: 'receipts';
+            referencedColumns: ['receipt_id'];
+          },
+        ];
       };
     };
     Views: {

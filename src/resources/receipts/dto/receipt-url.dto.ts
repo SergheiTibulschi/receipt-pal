@@ -1,4 +1,5 @@
 import { IsString, Matches } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class ReceiptUrlDTO {
   @IsString()
@@ -9,5 +10,6 @@ export class ReceiptUrlDTO {
         "Hey there! It looks like the link you've entered doesn't match a valid receipt. Please double-check the URL, my friend!",
     },
   )
+  @ApiProperty()
   url: string;
 }

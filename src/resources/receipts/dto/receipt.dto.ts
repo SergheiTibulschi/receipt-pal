@@ -1,81 +1,99 @@
 import { IsString, IsNumber, IsArray, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
-
-export class ReceiptDTO {
-  @IsString()
-  companyName: string;
-
-  @IsString()
-  fiscalCode: string;
-
-  @IsString()
-  address: string;
-
-  @IsString()
-  registrationNumber: string;
-
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => ItemDTO)
-  items: ItemDTO[];
-
-  @ValidateNested()
-  @Type(() => TotalDTO)
-  total: TotalDTO;
-
-  @ValidateNested()
-  @Type(() => TransactionDetailsDTO)
-  transactionDetails: TransactionDetailsDTO;
-}
+import { ApiProperty } from '@nestjs/swagger';
 
 class ItemDTO {
   @IsString()
+  @ApiProperty()
   description: string;
 
+  @ApiProperty({ type: 'integer' })
   @IsNumber()
   quantity: number;
 
   @IsNumber()
+  @ApiProperty({ type: 'integer' })
   unitPrice: number;
 
   @IsString()
+  @ApiProperty()
   amount: string;
+}
+
+class VatDetailDTO {
+  @IsString()
+  @ApiProperty()
+  percentage: string;
+
+  @IsNumber()
+  @ApiProperty({ type: 'integer' })
+  amount: number;
 }
 
 class TotalDTO {
   @IsNumber()
+  @ApiProperty({ type: 'integer' })
   amount: number;
 
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => VatDetailDTO)
+  @ApiProperty({ type: VatDetailDTO, isArray: true })
   vat: VatDetailDTO[];
 
   @IsString()
+  @ApiProperty()
   paymentMethod: string;
-}
-
-class VatDetailDTO {
-  @IsString()
-  percentage: string;
-
-  @IsNumber()
-  amount: number;
 }
 
 class TransactionDetailsDTO {
   @IsString()
+  @ApiProperty()
   date: string;
 
   @IsString()
+  @ApiProperty()
   time: string;
 
   @IsString()
+  @ApiProperty()
   fiscalReceiptNumber: string;
 
   @IsString()
+  @ApiProperty()
   manufacturingNumber: string;
+}
+
+export class ReceiptDTO {
+  @IsString()
+  @ApiProperty()
+  companyName: string;
 
   @IsString()
-  receiptId: string;
+  @ApiProperty()
+  fiscalCode: string;
+
+  @IsString()
+  @ApiProperty()
+  address: string;
+
+  @IsString()
+  @ApiProperty()
+  registrationNumber: string;
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => ItemDTO)
+  @ApiProperty({ type: ItemDTO, isArray: true })
+  items: ItemDTO[];
+
+  @ValidateNested()
+  @Type(() => TotalDTO)
+  @ApiProperty({ type: TotalDTO })
+  total: TotalDTO;
+
+  @ValidateNested()
+  @Type(() => TransactionDetailsDTO)
+  @ApiProperty({ type: TransactionDetailsDTO })
+  transactionDetails: TransactionDetailsDTO;
 }

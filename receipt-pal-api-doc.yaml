@@ -1,0 +1,190 @@
+openapi: 3.0.0
+paths:
+  /receipts:
+    post:
+      operationId: create-receipt
+      summary: ""
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReceiptUrlDTO"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ApiResponseDto"
+                  - properties:
+                      data:
+                        $ref: "#/components/schemas/ReceiptDTO"
+                      error:
+                        type: string
+                        nullable: true
+                        example: null
+                        description: An optional error message if something went wrong
+    get:
+      operationId: get-all-receipts
+      summary: ""
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ApiResponseDto"
+                  - properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/ReceiptDTO"
+                      error:
+                        type: string
+                        nullable: true
+                        example: null
+                        description: An optional error message if something went wrong
+  /receipts/{id}:
+    get:
+      operationId: get-receipt-by-id
+      summary: ""
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+    delete:
+      operationId: delete-receipt-by-id
+      summary: ""
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+info:
+  title: ReceiptPal
+  description: ReceiptPal API description
+  version: "1.0"
+  contact: {}
+tags:
+  - name: receipt-pal
+    description: ""
+servers: []
+components:
+  schemas:
+    ApiResponseDto:
+      type: object
+      properties:
+        data:
+          type: object
+          nullable: true
+        error:
+          type: string
+          nullable: true
+      required:
+        - data
+        - error
+    ItemDTO:
+      type: object
+      properties:
+        description:
+          type: string
+        quantity:
+          type: integer
+        unitPrice:
+          type: integer
+        amount:
+          type: string
+      required:
+        - description
+        - quantity
+        - unitPrice
+        - amount
+    VatDetailDTO:
+      type: object
+      properties:
+        percentage:
+          type: string
+        amount:
+          type: integer
+      required:
+        - percentage
+        - amount
+    TotalDTO:
+      type: object
+      properties:
+        amount:
+          type: integer
+        vat:
+          type: array
+          items:
+            $ref: "#/components/schemas/VatDetailDTO"
+        paymentMethod:
+          type: string
+      required:
+        - amount
+        - vat
+        - paymentMethod
+    TransactionDetailsDTO:
+      type: object
+      properties:
+        date:
+          type: string
+        time:
+          type: string
+        fiscalReceiptNumber:
+          type: string
+        manufacturingNumber:
+          type: string
+      required:
+        - date
+        - time
+        - fiscalReceiptNumber
+        - manufacturingNumber
+    ReceiptDTO:
+      type: object
+      properties:
+        companyName:
+          type: string
+        fiscalCode:
+          type: string
+        address:
+          type: string
+        registrationNumber:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/ItemDTO"
+        total:
+          $ref: "#/components/schemas/TotalDTO"
+        transactionDetails:
+          $ref: "#/components/schemas/TransactionDetailsDTO"
+      required:
+        - companyName
+        - fiscalCode
+        - address
+        - registrationNumber
+        - items
+        - total
+        - transactionDetails
+    ReceiptUrlDTO:
+      type: object
+      properties:
+        url:
+          type: string
+      required:
+        - url

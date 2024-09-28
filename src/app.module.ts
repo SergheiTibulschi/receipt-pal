@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { SupabaseModule } from './resources/supabase';
 import { ConfigModule } from '@nestjs/config';
 import { ReceiptsModule } from './resources/receipts/receipts.module';
@@ -19,7 +17,7 @@ import { AssistantModule } from './resources/assistant/assistant.module';
     ScraperModule,
     AssistantModule,
   ],
-  controllers: [AppController],
-  providers: [AppService, ScraperService, AssistantService],
+  controllers: [],
+  providers: [ScraperService, AssistantService],
 })
 export class AppModule {}
