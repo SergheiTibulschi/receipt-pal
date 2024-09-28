@@ -30,25 +30,37 @@ paths:
     get:
       operationId: get-all-receipts
       summary: ""
-      parameters: []
+      parameters:
+        - name: page
+          required: true
+          in: query
+          schema:
+            default: 1
+            type: integer
+        - name: limit
+          required: true
+          in: query
+          schema:
+            default: 10
+            type: integer
       responses:
-        "200":
+        default:
           description: ""
           content:
             application/json:
               schema:
-                allOf:
-                  - $ref: "#/components/schemas/ApiResponseDto"
-                  - properties:
-                      data:
-                        type: array
-                        items:
-                          $ref: "#/components/schemas/ReceiptDTO"
-                      error:
-                        type: string
-                        nullable: true
-                        example: null
-                        description: An optional error message if something went wrong
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/ReceiptDTO"
+                  total:
+                    type: integer
+                  page:
+                    type: integer
+                  limit:
+                    type: integer
   /receipts/{id}:
     get:
       operationId: get-receipt-by-id
@@ -103,55 +115,34 @@ components:
         description:
           type: string
         quantity:
-          type: integer
+          type: number
         unitPrice:
-          type: integer
+          type: number
         amount:
           type: string
+        vatPercentage:
+          type: string
+        vatAmount:
+          type: number
       required:
         - description
         - quantity
         - unitPrice
         - amount
-    VatDetailDTO:
-      type: object
-      properties:
-        percentage:
-          type: string
-        amount:
-          type: integer
-      required:
-        - percentage
-        - amount
-    TotalDTO:
-      type: object
-      properties:
-        amount:
-          type: integer
-        vat:
-          type: array
-          items:
-            $ref: "#/components/schemas/VatDetailDTO"
-        paymentMethod:
-          type: string
-      required:
-        - amount
-        - vat
-        - paymentMethod
+        - vatPercentage
+        - vatAmount
     TransactionDetailsDTO:
       type: object
       properties:
-        date:
+        purchasedAt:
           type: string
-        time:
-          type: string
+          format: date-time
         fiscalReceiptNumber:
           type: string
         manufacturingNumber:
           type: string
       required:
-        - date
-        - time
+        - purchasedAt
         - fiscalReceiptNumber
         - manufacturingNumber
     ReceiptDTO:
@@ -169,18 +160,24 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ItemDTO"
-        total:
-          $ref: "#/components/schemas/TotalDTO"
+        totalAmount:
+          type: number
+        paymentMethod:
+          type: string
         transactionDetails:
           $ref: "#/components/schemas/TransactionDetailsDTO"
+        receiptId:
+          type: string
       required:
         - companyName
         - fiscalCode
         - address
         - registrationNumber
         - items
-        - total
+        - totalAmount
+        - paymentMethod
         - transactionDetails
+        - receiptId
     ReceiptUrlDTO:
       type: object
       properties:

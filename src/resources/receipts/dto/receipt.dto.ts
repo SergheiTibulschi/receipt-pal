@@ -1,4 +1,10 @@
-import { IsString, IsNumber, IsArray, ValidateNested } from 'class-validator';
+import {
+  IsString,
+  IsNumber,
+  IsArray,
+  ValidateNested,
+  IsDateString,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -7,53 +13,31 @@ class ItemDTO {
   @ApiProperty()
   description: string;
 
-  @ApiProperty({ type: 'integer' })
   @IsNumber()
+  @ApiProperty({ type: 'number' })
   quantity: number;
 
   @IsNumber()
-  @ApiProperty({ type: 'integer' })
+  @ApiProperty({ type: 'number' })
   unitPrice: number;
 
   @IsString()
   @ApiProperty()
   amount: string;
-}
-
-class VatDetailDTO {
-  @IsString()
-  @ApiProperty()
-  percentage: string;
-
-  @IsNumber()
-  @ApiProperty({ type: 'integer' })
-  amount: number;
-}
-
-class TotalDTO {
-  @IsNumber()
-  @ApiProperty({ type: 'integer' })
-  amount: number;
-
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => VatDetailDTO)
-  @ApiProperty({ type: VatDetailDTO, isArray: true })
-  vat: VatDetailDTO[];
 
   @IsString()
   @ApiProperty()
-  paymentMethod: string;
+  vatPercentage: string;
+
+  @IsNumber()
+  @ApiProperty({ type: 'number' })
+  vatAmount: number;
 }
 
 class TransactionDetailsDTO {
-  @IsString()
-  @ApiProperty()
-  date: string;
-
-  @IsString()
-  @ApiProperty()
-  time: string;
+  @IsDateString()
+  @ApiProperty({ type: 'string', format: 'date-time' })
+  purchasedAt: string;
 
   @IsString()
   @ApiProperty()
@@ -87,13 +71,20 @@ export class ReceiptDTO {
   @ApiProperty({ type: ItemDTO, isArray: true })
   items: ItemDTO[];
 
-  @ValidateNested()
-  @Type(() => TotalDTO)
-  @ApiProperty({ type: TotalDTO })
-  total: TotalDTO;
+  @IsNumber()
+  @ApiProperty({ type: 'number' })
+  totalAmount: number;
+
+  @IsString()
+  @ApiProperty()
+  paymentMethod: string;
 
   @ValidateNested()
   @Type(() => TransactionDetailsDTO)
   @ApiProperty({ type: TransactionDetailsDTO })
   transactionDetails: TransactionDetailsDTO;
+
+  @IsString()
+  @ApiProperty()
+  receiptId: string;
 }

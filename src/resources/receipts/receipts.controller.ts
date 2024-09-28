@@ -1,10 +1,20 @@
-import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  Query,
+} from '@nestjs/common';
 import { ReceiptsService } from './receipts.service';
 import { ReceiptUrlDTO } from './dto/receipt-url.dto';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { ApiGenericResponse } from '../../decorators/api-generic-response.decorator';
 import { ReceiptDTO } from './dto/receipt.dto';
 import { ApiResponseDto } from '../../models/api-response.dto';
+import { PaginationQueryDto } from '../../models/paginatio-query.dto';
+import { getPaginationSchema } from '../../helpers/get-pagination-schema';
 
 @Controller('receipts')
 export class ReceiptsController {
@@ -26,10 +36,12 @@ export class ReceiptsController {
 
   @Get()
   @ApiOperation({ operationId: 'get-all-receipts' })
-  @ApiGenericResponse(ReceiptDTO, true)
-  async findAll() {
+  @ApiResponse({
+    schema: getPaginationSchema(ReceiptDTO),
+  })
+  async findAll(@Query() paginationQuery: PaginationQueryDto) {
     try {
-      const data = await this.receiptsService.findAll();
+      const data = await this.receiptsService.findAll(paginationQuery);
       return { data, error: null };
     } catch (error) {
       return { data: null, error: error.message };

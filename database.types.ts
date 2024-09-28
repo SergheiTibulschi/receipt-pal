@@ -9,6 +9,8 @@ export type Database = {
           quantity: number;
           receipt_id: string;
           unit_price: number;
+          vat_amount: number;
+          vat_percentage: string;
         };
         Insert: {
           amount: string;
@@ -17,6 +19,8 @@ export type Database = {
           quantity: number;
           receipt_id: string;
           unit_price: number;
+          vat_amount: number;
+          vat_percentage: string;
         };
         Update: {
           amount?: string;
@@ -25,6 +29,8 @@ export type Database = {
           quantity?: number;
           receipt_id?: string;
           unit_price?: number;
+          vat_amount?: number;
+          vat_percentage?: string;
         };
         Relationships: [
           {
@@ -41,77 +47,45 @@ export type Database = {
           address: string;
           company_name: string;
           created_at: string | null;
-          date: string;
           fiscal_code: string;
           fiscal_receipt_number: string;
           id: number;
           manufacturing_number: string;
           payment_method: string;
+          purchased_at: string | null;
           receipt_id: string;
           registration_number: string;
-          time: string;
           total_amount: number;
         };
         Insert: {
           address: string;
           company_name: string;
           created_at?: string | null;
-          date: string;
           fiscal_code: string;
           fiscal_receipt_number: string;
           id?: number;
           manufacturing_number: string;
           payment_method: string;
+          purchased_at?: string | null;
           receipt_id: string;
           registration_number: string;
-          time: string;
           total_amount: number;
         };
         Update: {
           address?: string;
           company_name?: string;
           created_at?: string | null;
-          date?: string;
           fiscal_code?: string;
           fiscal_receipt_number?: string;
           id?: number;
           manufacturing_number?: string;
           payment_method?: string;
+          purchased_at?: string | null;
           receipt_id?: string;
           registration_number?: string;
-          time?: string;
           total_amount?: number;
         };
         Relationships: [];
-      };
-      vat_details: {
-        Row: {
-          id: number;
-          receipt_id: string;
-          vat_amount: number;
-          vat_percentage: string;
-        };
-        Insert: {
-          id?: number;
-          receipt_id: string;
-          vat_amount: number;
-          vat_percentage: string;
-        };
-        Update: {
-          id?: number;
-          receipt_id?: string;
-          vat_amount?: number;
-          vat_percentage?: string;
-        };
-        Relationships: [
-          {
-            foreignKeyName: 'vat_details_receipt_id_fkey';
-            columns: ['receipt_id'];
-            isOneToOne: false;
-            referencedRelation: 'receipts';
-            referencedColumns: ['receipt_id'];
-          },
-        ];
       };
     };
     Views: {
