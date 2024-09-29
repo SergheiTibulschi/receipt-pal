@@ -68,8 +68,8 @@ final class MainViewModel: ObservableObject {
     }
     
     func saveReceipt(receiptUrl: String) {
+        isLoading = true
         Task {
-            isLoading = true
             do {
                 let response = try await DefaultAPI.createReceipt(receiptUrlDTO: .init(url: receiptUrl))
                 print(response)
