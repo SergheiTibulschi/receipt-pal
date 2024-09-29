@@ -45,7 +45,9 @@ export class ReceiptsService {
           fiscal_receipt_number: receipt.transactionDetails.fiscalReceiptNumber,
           manufacturing_number: receipt.transactionDetails.manufacturingNumber,
           receipt_id: createReceiptDto.url,
-          purchased_at: receipt.transactionDetails.purchasedAt,
+          purchased_at: new Date(
+            receipt.transactionDetails.purchasedAt,
+          ).toISOString(),
           payment_method: receipt.paymentMethod,
           total_amount: receipt.totalAmount,
         },
@@ -155,7 +157,7 @@ export class ReceiptsService {
       registrationNumber: data.registration_number,
       receiptId: data.receipt_id,
       transactionDetails: {
-        purchasedAt: data.purchased_at,
+        purchasedAt: new Date(data.purchased_at).toISOString(),
         fiscalReceiptNumber: data.fiscal_receipt_number,
         manufacturingNumber: data.manufacturing_number,
       },

@@ -44,7 +44,7 @@ export class AssistantService {
         ) {
           try {
             receipt = JSON.parse(message.content[0].text.value) as ReceiptDTO;
-          } catch {
+          } catch (error) {
             throw new Error('Error parsing the assistant response');
           }
         }
