@@ -26,8 +26,8 @@ export class ChatController {
   ) {
     try {
       const response = await this.chatService.sendMessage(userId, body.message);
-      return { data: response, error: null };
-    } catch {
+      return { data: { response }, error: null };
+    } catch (error) {
       return { data: null, error: 'Error sending the message' };
     }
   }
