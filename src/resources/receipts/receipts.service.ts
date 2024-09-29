@@ -7,6 +7,7 @@ import { Supabase } from '../supabase';
 import { ReceiptItemInsert } from '../../types/receipts';
 import { PaginationQueryDto } from '../../models/paginatio-query.dto';
 import { ReceiptDTO } from './dto/receipt.dto';
+import { formatDate, formatDateToISO } from '../../helpers/date';
 
 @Injectable()
 export class ReceiptsService {
@@ -45,9 +46,9 @@ export class ReceiptsService {
           fiscal_receipt_number: receipt.transactionDetails.fiscalReceiptNumber,
           manufacturing_number: receipt.transactionDetails.manufacturingNumber,
           receipt_id: createReceiptDto.url,
-          purchased_at: new Date(
-            receipt.transactionDetails.purchasedAt,
-          ).toISOString(),
+          purchased_at: formatDateToISO(
+            new Date(receipt.transactionDetails.purchasedAt),
+          ),
           payment_method: receipt.paymentMethod,
           total_amount: receipt.totalAmount,
         },
@@ -79,6 +80,12 @@ export class ReceiptsService {
 
     return {
       ...receipt,
+      transactionDetails: {
+        ...receipt.transactionDetails,
+        purchasedAt: formatDateToISO(
+          new Date(receipt.transactionDetails.purchasedAt),
+        ),
+      },
       receiptId: createReceiptDto.url,
     };
   }
@@ -112,7 +119,7 @@ export class ReceiptsService {
           registrationNumber: receipt.registration_number,
           receiptId: receipt.receipt_id,
           transactionDetails: {
-            purchasedAt: receipt.purchased_at,
+            purchasedAt: formatDateToISO(new Date(receipt.purchased_at)),
             fiscalReceiptNumber: receipt.fiscal_receipt_number,
             manufacturingNumber: receipt.manufacturing_number,
           },
@@ -157,7 +164,7 @@ export class ReceiptsService {
       registrationNumber: data.registration_number,
       receiptId: data.receipt_id,
       transactionDetails: {
-        purchasedAt: new Date(data.purchased_at).toISOString(),
+        purchasedAt: formatDate(new Date(data.purchased_at)),
         fiscalReceiptNumber: data.fiscal_receipt_number,
         manufacturingNumber: data.manufacturing_number,
       },
