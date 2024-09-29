@@ -8,9 +8,12 @@ import {
   SwaggerModule,
 } from '@nestjs/swagger';
 import { stringify } from 'yaml';
+import { AppLogger } from './logging/app-logger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  app.useLogger(new AppLogger());
 
   app.useGlobalPipes(
     new ValidationPipe({
