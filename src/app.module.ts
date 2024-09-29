@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { SupabaseModule } from './resources/supabase';
 import { ConfigModule } from '@nestjs/config';
 import { ReceiptsModule } from './resources/receipts/receipts.module';
@@ -7,6 +7,7 @@ import { ScraperModule } from './resources/scraper/scraper.module';
 import { AssistantService } from './resources/assistant/assistant.service';
 import { AssistantModule } from './resources/assistant/assistant.module';
 import { ChatModule } from './resources/chat/chat.module';
+import { LoggingMiddleware } from './middleware/logging.middleware';
 
 @Module({
   imports: [
@@ -22,4 +23,8 @@ import { ChatModule } from './resources/chat/chat.module';
   controllers: [],
   providers: [ScraperService, AssistantService],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggingMiddleware).forRoutes('*');
+  }
+}
