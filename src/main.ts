@@ -32,6 +32,7 @@ async function bootstrap() {
   };
 
   const document = SwaggerModule.createDocument(app, config, options);
+  SwaggerModule.setup('api', app, document);
   const yamlString: string = stringify(document, {});
   fs.writeFileSync('receipt-pal-api-doc.yaml', yamlString);
 
